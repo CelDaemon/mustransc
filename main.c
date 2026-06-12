@@ -18,22 +18,25 @@ int str_hash(char const * const str) {
     return acc;
 }
 
-void decode_buffer(char * restrict const buf, int const len, int * restrict const key) {
+void transcode_buffer(char * restrict const buf, int const len, int * restrict const key, bool const encode) {
     auto cur = *key;
     for(int i = 0; i < len; i++) {
-        char const dec = buf[i] = (char)(buf[i] ^ (cur >> 8));
-        cur = cur * 498729871 + 85731 * dec;
+        auto const in = buf[i];
+        auto const out = (char) (in ^ (cur >> 8));
+        buf[i] = out;
+        auto const mult = encode ? in : out;
+        cur = cur * 498729871 + 85731 * mult;
     }
     *key = cur;
 }
 
-int decode(FILE * restrict const input, FILE * restrict const output, int const key) {
-    auto cur = key;
+int transcode(FILE * restrict const input, FILE * restrict const output, int const key, bool const encode) {
     char buffer[BUFFER_SIZE] = {};
+    auto cur = key;
     auto read = 0;
     do {
         read = fread(buffer, 1, BUFFER_SIZE, input);
-        decode_buffer(buffer, read, &cur);
+        transcode_buffer(buffer, read, &cur, encode);
         if(fwrite(buffer, 1, read, output) != read)
             return 1;
     } while (read == BUFFER_SIZE);
@@ -52,7 +55,6 @@ int calculate_key(char const * restrict const path, char const * restrict const 
     auto const str = key ? key : path_to_filename(path);
     return str_hash(str);
 }
-
 
 int main(int argc, char *argv[]) {
     if (argc < 4) {
@@ -85,17 +87,15 @@ int main(int argc, char *argv[]) {
     auto const mus_path = !encode ? input_path : output_path;
     auto const key = calculate_key(mus_path, key_arg);
 
-    printf("%d\n", key);
-
-    if (decode(input_file, output_file, key)) {
-        perror("Failed to decode file");
+    if (transcode(input_file, output_file, key, encode)) {
+        perror("Failed to transcode file");
         fclose(input_file);
         fclose(output_file);
         return 1;
     }
     fclose(input_file);
     fclose(output_file);
-    puts("Decoding succesful");
+    puts("Transcoding succesful");
 
     return 0;
 }
