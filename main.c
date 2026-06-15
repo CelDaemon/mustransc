@@ -13,7 +13,7 @@ char const *path_to_filename(char const * const path) {
 int str_hash(char const * const str) {
     auto const len = strlen(str);
     auto acc = 0;
-    for (int i = 0; i < len; i++)
+    for (size_t i = 0; i < len; i++)
         acc = str[i] + 31 * acc;
     return acc;
 }
@@ -33,7 +33,7 @@ void transcode_buffer(char * restrict const buf, int const len, int * restrict c
 int transcode(FILE * restrict const input, FILE * restrict const output, int const key, bool const encode) {
     char buffer[BUFFER_SIZE] = {};
     auto cur = key;
-    auto read = 0;
+    size_t read;
     do {
         read = fread(buffer, 1, BUFFER_SIZE, input);
         transcode_buffer(buffer, read, &cur, encode);
