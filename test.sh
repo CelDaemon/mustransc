@@ -1,6 +1,6 @@
 #!/bin/sh
 
-gcc -O3 -o ./main main.c
+gcc -Wall -Wextra -Wpedantic -O3 -o ./main main.c
 
 ./main decode mellohi.mus mellohi.ogg mellohi.mus
 ./main encode mellohi.ogg mellohi.mus.2 mellohi.mus
