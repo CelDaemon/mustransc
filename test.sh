@@ -2,8 +2,8 @@
 
 gcc -Wall -Wextra -Wpedantic -O3 -o ./main main.c
 
-./main decode mellohi.mus mellohi.ogg mellohi.mus
-./main encode mellohi.ogg mellohi.mus.2 mellohi.mus
+time ./main decode mellohi.mus mellohi.ogg mellohi.mus
+time ./main encode mellohi.ogg mellohi.mus.2 mellohi.mus
 
 sha256sum mellohi.mus mellohi.mus.2
 

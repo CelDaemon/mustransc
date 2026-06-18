@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define BUFFER_SIZE 4096
+constexpr size_t BUFFER_SIZE = 4096;
 
 char const *path_to_filename(char const * const path) {
     auto const match = strrchr(path, '/');
@@ -18,9 +18,9 @@ int str_hash(char const * const str) {
     return acc;
 }
 
-void transcode_buffer(char * restrict const buf, int const len, int * restrict const key, bool const encode) {
+void transcode_buffer(char * restrict const buf, size_t const len, int * restrict const key, bool const encode) {
     auto cur = *key;
-    for(int i = 0; i < len; i++) {
+    for(size_t i = 0; i < len; i++) {
         auto const in = buf[i];
         auto const out = (char) (in ^ (cur >> 8));
         buf[i] = out;
@@ -43,7 +43,7 @@ int transcode(FILE * restrict const input, FILE * restrict const output, int con
     return ferror(input);
 }
 
-int encode_decode(char const * const arg) {
+int parse_action(char const * const arg) {
     if(!strcmp(arg, "decode"))
         return 0;
     if(!strcmp(arg, "encode"))
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    auto const encode = encode_decode(argv[1]);
+    auto const encode = parse_action(argv[1]);
     if(encode == -1) {
         fprintf(stderr, "Invalid action '%s', must be decode or encode", argv[1]);
         return 1;
