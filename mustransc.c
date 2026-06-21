@@ -58,7 +58,7 @@ int calculate_key(char const * restrict const path, char const * restrict const 
 
 int main(int argc, char *argv[]) {
     if (argc < 4) {
-        fputs("Usage: musdec <decode|encode> [INPUT] [OUTPUT] (KEY)\n", stderr);
+        fputs("Usage: mustransc <decode|encode> [INPUT] [OUTPUT] (KEY)\n", stderr);
         return 1;
     }
 

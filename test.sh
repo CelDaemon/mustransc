@@ -1,12 +1,7 @@
 #!/bin/sh
+set -e
+./mustransc decode 'test/test1.mus' 'test/test1.out.txt'
+./mustransc decode 'test/test2.mus' 'test/test2.out.bin'
+./mustransc encode 'test/test3.txt' 'test/test3.out.mus'
 
-gcc -Wall -Wextra -Wpedantic -O3 -o ./main main.c
-
-time ./main decode mellohi.mus mellohi.ogg mellohi.mus
-time ./main encode mellohi.ogg mellohi.mus.2 mellohi.mus
-
-sha256sum mellohi.mus mellohi.mus.2
-
-hexdump -C mellohi.mus | head > mellohi.mus.hex
-hexdump -C mellohi.mus.2 | head > mellohi.mus.2.hex
-git diff --no-index mellohi.mus.hex mellohi.mus.2.hex
+{ cd 'test' && cksum -a sha256 --strict -c 'hashes.sha256'; }

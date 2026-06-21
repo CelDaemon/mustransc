@@ -1,5 +1,2 @@
-main
-*.mus
-*.ogg
-*.hex
-*.2
+mustransc
+test/*.out.*
