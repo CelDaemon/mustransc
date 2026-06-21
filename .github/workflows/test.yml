@@ -1,0 +1,12 @@
+on:
+  push:
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./build.sh
+      - run: ./test.sh
+
+name: Run tests
