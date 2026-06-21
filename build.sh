@@ -1,3 +1,3 @@
 #!/bin/sh
 
-gcc -o ./mustransc mustransc.c
+gcc -std=c23 -o ./mustransc mustransc.c
